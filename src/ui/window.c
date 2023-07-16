@@ -6,8 +6,13 @@
 #include <GLFW/glfw3.h>
 
 #include "include/window.h"
+#include "include/renderer.h"
 
 GLFWwindow *mcmWnd = NULL;
+
+UIRectangle *mcmRectangles;
+int mcmRectanglesSize;
+int mcmRectanglesUsed;
 
 void mcm_ui_window_new(unsigned int width, unsigned int height, const char *title) {
   if (!mcmWnd) {
@@ -32,12 +37,25 @@ void mcm_ui_window_new(unsigned int width, unsigned int height, const char *titl
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
     glViewport(0, 0, width, height);
+    mcm_ui_renderer_init();
+
+    mcmRectanglesSize = 1;
+    mcmRectanglesUsed = 0;
+    mcmRectangles = malloc(sizeof(UIRectangle));
   }
 }
 
 void mcm_ui_window_clear() {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
+
+  mcm_ui_renderer_preDraw();
+}
+
+void mcm_ui_window_draw() {
+  for (int i = 0; i < mcmRectanglesUsed; i++) {
+    mcm_ui_rectangle_draw(mcmRectangles[i]);
+  }
 }
 
 void mcm_ui_window_display() {
@@ -51,6 +69,15 @@ void mcm_ui_window_update() {
 void mcm_ui_window_free() {
   glfwDestroyWindow(mcmWnd);
   glfwTerminate();
+}
+
+void mcm_ui_window_addRectangle(UIRectangle rect) {
+  if (mcmRectanglesSize == mcmRectanglesUsed) {
+    mcmRectanglesSize *= 2;
+    mcmRectangles = realloc(mcmRectangles, mcmRectanglesSize * sizeof(UIRectangle));
+  }
+
+  mcmRectangles[mcmRectanglesUsed++] = rect;
 }
 
 int mcm_ui_window_isOpen() {
