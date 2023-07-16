@@ -1,0 +1,10 @@
+# Common build output directories
+build
+bin
+out
+debug
+release
+
+###
+
+.vscode
