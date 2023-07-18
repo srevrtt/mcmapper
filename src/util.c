@@ -20,5 +20,6 @@ char *mcm_util_readFile(const char *filepath) {
   fread(content, len, 1, file);
   content[len] = '\0';
 
+  fclose(file);
   return content;
 }

@@ -27,11 +27,11 @@ void mcm_ui_renderer_init() {
   const char *fragmentShaderSource = mcm_util_readFile("resources/shaders/rectangle.fs");
 
   unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+  glShaderSource(vertexShader, 1, &vertexShaderSource, 0);
   glCompileShader(vertexShader);
 
   unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+  glShaderSource(fragmentShader, 1, &fragmentShaderSource, 0);
   glCompileShader(fragmentShader);
 
   shaderProgram = glCreateProgram();
